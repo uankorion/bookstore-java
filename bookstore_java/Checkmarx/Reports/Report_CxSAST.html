@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<style>
+    #cx-report {
+        animation: fadein 2s;
+    }
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .aui-group > .aui-item {
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: table;
+        margin: 0;
+    }
+
+    .cx-report .recurrent-legend {
+        margin-right: 15px;
+    }
+
+    .cx-report .legend-color-box.recurrent-legend-color {
+        background-color: #372F51;
+    }
+
+    .cx-report .legend-color-box.new-legend-color  {
+        background: linear-gradient(45deg, white 25%, #373050 25%, #373050 50%, white 50%, white 75%, #373050 75%);
+        background-size: 4px 4px;
+    }
+
+    .cx-report .legend-color-box {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+    }
+
+    .cx-report .legend-text {
+        color: #9B9B9B;
+        font-family: Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .cx-report .legend-item {
+        display: flex;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+
+    .cx-report .chart-legend {
+        display: inline-flex;
+        height: 100%;
+        margin: auto;
+    }
+
+    .cx-report .chart-legend-container {
+        align-items: center;
+        width: 50%;
+        text-align: right;
+    }
+
+    .cx-report .results-report .threshold-exceeded-compliance {
+        width: 50%;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .top-of-chart {
+        max-width: 709px;
+    }
+
+    .cx-report .top-of-chart {
+        display: flex;
+        max-width: 475px;
+        min-width: 330px;
+        width: 100%;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .new-bar-title-container {
+        margin-left: 25%;
+    }
+
+    .cx-report .new-bar-title-container {
+        font-weight: bold;
+        background-color: #f2f2f2;
+        text-align: center;
+        border-radius: 8px;
+        width: fit-content;
+        line-height: 19px;
+        padding: 1px 5px;
+        margin: auto;
+        color: #373050;
+    }
+
+    .cx-report .bar-title-wrapper {
+        position: absolute;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .bar-title-wrapper {
+        width: 100%;
+    }
+
+    .cx-report .new-scans {
+        background: linear-gradient(45deg, white 25%,
+        #373050 25%, #373050 50%,
+        white 50%, white 75%,
+        #373050 75%);
+        background-size: 4px 4px;
+    }
+
+    .cx-report .recurrent-scans {
+        background-color: #373050;
+    }
+
+    .cx-report .summary-results {
+        display: flex;
+        position: relative;
+        width: 100%;
+        min-width: 635px;
+    }
+
+    .cx-report .results-report .osa-summary {
+        margin: 0;
+        position: relative;
+        width: 50%;
+        margin-left: 3%;
+    }
+
+    .cx-report .aui-item.details {
+        width: 530px;
+    }
+
+    .cx-report .results-report {
+        max-width: 1196px;
+    }
+
+    .cx-report {
+        font-family: 'Roboto', sans-serif;
+        margin-right: 35px;
+        margin-left: 35px;
+        max-width: 1196px;
+    }
+
+    .cx-report .cx-report-title {
+        font-size: 32px;
+        font-weight: 600;
+        display: inline-block;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 100%;
+        border-bottom: solid 2px #373050;
+        color: #373050;
+    }
+
+    .cx-report .summary-title-text {
+        white-space: nowrap;
+        font-weight: bold;
+    }
+
+    .cx-report .results-report .summary-section {
+        display: flex;
+        padding-top: 34px;
+        padding-bottom: 25px;
+        position: relative;
+    }
+
+    .cx-report .sast-failed-error {
+        height: 512px;
+        width: 100%;
+        background-color: #F2F2F2;
+        z-index: 3;
+        position: relative;
+    }
+
+    .cx-report .sast-error-container {
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        transform: translate(0, -50%);
+        text-align: center;
+    }
+
+    .cx-report .sast-error-text {
+        color: #382F50;
+        font-family: Roboto, sans-serif;
+        font-size: 15px;
+        line-height: 22px;
+        margin-top: 17px;
+    }
+
+    .cx-report .results-report .summary-report-title {
+        font-size: 24px;
+        font-weight: 400;
+        padding-bottom: 21px;
+        color: #373050;
+    }
+
+    .cx-report .results-report .sast-summary {
+        position: relative;
+        margin-right: 3%;
+        width: 50%;
+    }
+
+    .cx-report .results-report .detailed-report .report-link {
+        color: #4A90E2;
+        font-size: 14px;
+        padding: 15px 2px;
+    }
+
+    .cx-report .results-report .title-links {
+        display: flex;
+        color: #4A90E2;
+        font-size: 14px;
+        padding: 15px 2px;
+        align-items: center;
+    }
+
+    .cx-report .results-report .summary-section .title-links {
+        border-bottom: solid 1px #d5d5d5;
+    }
+
+    .cx-report .results-report .summary-section .sast .title-links {
+        max-width: 475px;
+    }
+
+    .cx-report .link-icon {
+        align-items: center;
+        display: inline-flex;
+    }
+
+    .cx-report .summary-section .link-to-result {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .cx-report .link-to-result {
+        display: flex;
+        align-items: center;
+    }
+
+    .cx-report .summary-link-text {
+        padding: 0 8px;
+    }
+
+    .cx-report .link-text {
+        padding: 0 8px;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .title-links {
+        max-width: 100%;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large {
+        width: 100%;
+        margin-bottom: 50px;
+        margin-left: 24%;
+        max-width: 709px;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .chart {
+        max-width: 709px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .chart li span {
+        max-width: 53px;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .chart .bar-title-container {
+        margin-left: 27%;
+        padding-top: 21px;
+        display: inline-flex;
+        text-align: center;
+        word-wrap: break-word;
+        color: #444444;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .chart .bar-title {
+        text-align: center;
+        width: 100%;
+    }
+
+    .cx-report .results-report .chart {
+        display: table;
+        table-layout: fixed;
+        max-width: 475px;
+        min-width: 330px;
+        width: 100%;
+        height: 240px;
+        margin-top: 0;
+        padding: 0;
+        background-image: linear-gradient(to top, #d5d5d5, #ffffff 2%);
+        background-size: 100% 70px;
+        background-position: left bottom;
+        border-bottom: solid #979797 2px;
+    }
+
+    .cx-report .results-report .chart li {
+        position: relative;
+        display: table-cell;
+        vertical-align: bottom;
+        height: 238px;
+    }
+
+    .cx-report .results-report .chart li span {
+        max-width: 20px;
+        /*overflow: hidden;*/
+    }
+
+    .cx-report .results-report .chart span {
+        margin-left: 25%;
+        display: block;
+        animation: draw 1s ease-in-out;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .chart .bar-count {
+        /*width: 53px;*/
+    }
+
+    .cx-report .results-report .chart .bar-count {
+        margin-left: 4px;
+        font-size: 14px;
+    }
+
+    .cx-report .results-report .chart .bar-title {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .cx-report .results-report .bar-title-icon svg {
+        position: absolute;
+    }
+
+    .cx-report .results-report .sast-summary.chart-large .bar-title-icon {
+        width: 30px;
+    }
+
+    .cx-report .results-report .bar-title-icon {
+        margin-right: 6px;
+        height: 20px;
+        width: 16px;
+        text-align: left;
+    }
+
+    .cx-report .results-report .chart .bar-title-container {
+        margin-left: 25%;
+        transform: translate(-25%, 0);
+        padding-top: 21px;
+        display: inline-flex;
+        text-align: center;
+        word-wrap: break-word;
+        color: #444444;
+        align-items: center;
+    }
+
+    .cx-report .results-report .chart .bar-3,
+    .cx-report .results-report .chart .bar-2,
+    .cx-report .results-report .chart .bar-1 {
+        position: relative;
+        background-color: #373050;
+    }
+
+    .cx-report .results-report .threshold-exceeded-compliance {
+    }
+
+    .cx-report .results-report .threshold-exceeded,
+    .cx-report .results-report .threshold-compliance {
+        min-width: 100%;
+        display: inline-flex;
+        font-size: 14px;
+        font-weight: normal;
+        border-radius: 2px;
+        padding: 4px 9px;
+    }
+
+    .cx-report .threshold-exceeded {
+        background-color: #DA2945;
+        color: white;
+        border-radius: 2px;
+        font-weight: bold;
+    }
+
+    .cx-report .results-report .threshold-exceeded-text,
+    .cx-report .results-report .threshold-compliance-text {
+
+    }
+
+    .cx-report .results-report .threshold-exceeded-icon,
+    .cx-report .results-report .threshold-compliance-icon {
+        display: inline-flex;
+        padding-right: 6px;
+        margin: auto 0;
+    }
+
+    .cx-report .results-report .threshold-compliance-text {
+        color: #21bf3f;
+    }
+
+    .cx-report .results-report .osa-libraries {
+        text-align: left;
+        margin-right: 35px;
+        background-color: #f2f2f2;
+        width: 138px;
+        padding: 16px;
+        padding-bottom: 39px;
+        /*can be 30*/
+    }
+
+    .cx-report .results-report .osa-libraries-title {
+        font-size: 14px;
+        font-weight: 600;
+        padding-bottom: 25px;
+    }
+
+    .cx-report .results-report .libraries-vulnerable {
+        overflow: hidden;
+        margin-bottom: 34px;
+    }
+
+    .cx-report .results-report .libraries-ok {
+        overflow: hidden;
+    }
+
+    .cx-report .results-report .libraries-vulnerable-number,
+    .cx-report .results-report .libraries-ok-number {
+        font-size: 18px;
+        margin: auto auto auto 10px;
+    }
+
+    .cx-report .results-report .libraries-vulnerable-icon,
+    .cx-report .results-report .libraries-ok-icon {
+        font-size: 18px;
+    }
+
+    .cx-report .results-report .libraries-vulnerable-text,
+    .cx-report .results-report .libraries-ok-text {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .cx-report .results-report .libraries-icon-number {
+        display: flex;
+        margin-bottom: 13px;
+    }
+
+    .cx-report .results-report .osa-results {
+        display: flex;
+    }
+
+    .cx-report .results-report .threshold-line {
+        width: 20px;
+        border-bottom: dashed white 1px;
+        padding-right: 3px;
+    }
+
+    .cx-report .results-report .chart-large .threshold-line {
+        width: 53px;
+    }
+
+    .cx-report .results-report .threshold-tooltip {
+        display: flex;
+        transform: translate(0, 50%);
+        font-size: 14px;
+        align-items: center;
+        color: #373050;
+        background-color: white;
+        text-align: center;
+        padding: 6px 8px 4px;
+        margin-left: 4px;
+        border-radius: 2px;
+        border: 1px solid #979797;
+    }
+
+    .cx-report .results-report .threshold-tooltip .tooltip-number {
+        padding-right: 4px;
+        padding-left: 6px;
+        line-height: normal;
+    }
+
+    .cx-report .results-report .threshold-tooltip::before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        top: 50%;
+        transform: translate(15%, -50%) rotate(45deg);
+        left: -5px;
+        border-left: 1px solid #979797;
+        border-bottom: 1px solid #979797;
+        background-color: white;
+    }
+
+    .cx-report .results-report .tooltip-container {
+        position: absolute;
+        display: inline-flex;
+    }
+
+    .cx-report .full-results-section {
+        border-top: solid 2px #373050;
+    }
+
+    .cx-report .summary-table-row {
+        white-space: nowrap;
+        display: inline-flex;
+        width: 100%;
+    }
+
+    .cx-report .summary-table-row.cxosa,
+    .cx-report .summary-table-row.cxsast {
+        display: inline-flex;
+    }
+
+    .cx-report table {
+        border-collapse: collapse;
+    }
+
+    .cx-report table td,
+    .cx-report table th {
+        border: solid transparent;
+    }
+
+    .cx-report .top-padding td {
+        padding-top: 59px;
+    }
+
+    .cx-report td {
+        border-color: transparent;
+    }
+
+    .cx-report .title-column,
+    .cx-report .main-column {
+        padding: 59px 0;
+        line-height: 25px;
+        display: inline-block;
+    }
+
+    .cx-report .main-column {
+        width: 77%;
+        /*max-width: 709px;*/
+        min-width: 500px;
+    }
+
+    .cx-report .title-column {
+        margin-right: 4%;
+        vertical-align: top;
+        height: 100%;
+        width: 20%;
+        color: #373050;
+        max-width: 250px;
+        min-width: 155px;
+    }
+
+    .cx-report .summary-title {
+        border-bottom: solid #979797 1px;
+        color: white;
+        background-color: #373050;
+        line-height: 28px;
+        padding: 5px 13px;
+    }
+
+    .cx-report .sum1 {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .cx-report .sum2 {
+        font-size: 16px;
+    }
+
+    .cx-report .sum-line1 {
+        width: 100%;
+        height: 1px;
+        background-color: #979797;
+    }
+
+    .cx-report .graph-title {
+        font-weight: 500;
+        font-size: 16px;
+        display: table-cell;
+        vertical-align: middle;
+        /*width: 75%;*/
+    }
+
+    .cx-report .graph {
+        position: relative;
+        text-align: left;
+        line-height: 25px;
+    }
+
+    .cx-report .graph-top {
+        display: table;
+        vertical-align: middle;
+    }
+
+    .cx-report .detailed-report {
+        margin-top: 12px;
+        display: block;
+        /*padding: 0 11px;*/
+    }
+
+    .cx-report .detailed-report-ttl {
+        font-size: 14px;
+    }
+
+    .cx-report .download-detailed-report {
+        color: #9b9b9b;
+        font-size: 14px;
+    }
+
+    .cx-report .download-icon,
+    .cx-report .link-text {
+        display: inline-flex;
+    }
+
+    .cx-report .download-icon {
+        margin-right: 9px;
+    }
+
+    .cx-report .download-icon > svg {
+        vertical-align: sub;
+    }
+
+    .cx-report .download-cx-report {
+        font-size: 16px;
+        padding-bottom: 5px;
+    }
+
+    .cx-report .pdf-report.download-icon,
+    .cx-report .html-report.download-icon {
+        margin-right: 6px;
+    }
+
+    .cx-report .summary-section .html-report {
+        margin-right: 10px;
+        border-right: solid 1px #d5d5d5;
+    }
+
+    .cx-report .link-to-result a {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .cx-report .title-links a {
+        color: #4A90E2;
+        text-decoration: none;
+    }
+
+    .cx-report .report-link {
+        line-height: 28px;
+    }
+
+    .cx-report .full-start-end {
+        display: inline-flex;
+        text-align: left;
+        width: 100%;
+        font-size: 14px;
+        color: #525055;
+        padding-top: 6px;
+    }
+
+    .cx-report .full-start-end-icon {
+        margin: 4px 7px 0 0;
+    }
+
+    .cx-report .full-start,
+    .cx-report .full-end,
+    .cx-report .full-files,
+    .cx-report .full-loc {
+        display: inline-flex;
+        line-height: 18px;
+        margin-right: 63px;
+    }
+
+    .cx-report .full-loc {
+        display: inline-block;
+    }
+
+    .cx-report .full-loc > div {
+        display: inline-block;
+    }
+
+    .cx-report .osa-downloads a,
+    .cx-report .sast-downloads a {
+        color: #4A90E2;
+        text-decoration: none;
+    }
+
+    .cx-report .full-downloads {
+        white-space: normal;
+    }
+
+    .cx-report .full-severity-title {
+        display: flex;
+        text-align: left;
+        margin-top: 45px;
+        margin-bottom: 18px;
+        font-size: 16px;
+    }
+
+    .cx-report .full-severity-title .severity-title-name {
+        display: inline-block;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+
+    .cx-report .full-severity-title .severity-count {
+        display: inline-block;
+    }
+
+    .cx-report .full-severity-title .severity-icon {
+        align-items: center;
+        display: inline-flex;
+    }
+
+    .cx-report table.cve-table {
+        width: 100%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .cx-report table.cve-table th,
+    .cx-report table.cve-table td {
+        border: 1px solid transparent;
+        text-align: left;
+    }
+
+    .cx-report table.cve-table th {
+        border-bottom: 1px solid #d5d5d5;
+        font-size: 14px;
+        color: #9b9b9b;
+        font-weight: normal;
+        padding: 2px 11px;
+    }
+
+    .cx-report table.cve-table td {
+        font-weight: 500;
+        font-size: 16px;
+        color: #373050;
+        border-bottom: 1px solid #d5d5d5;
+        padding: 11px;
+    }
+
+    .cx-report table.cve-table td.sast-cve-table-high,
+    .cx-report table.cve-table td.sast-cve-table-medium,
+    .cx-report table.cve-table td.sast-cve-table-low {
+        max-width: 19px;
+    }
+
+    .cx-report table.cve-table.sast-cve-table td:last-child,
+    .cx-report table.cve-table.sast-cve-table th:last-child {
+        padding-right: 20px;
+        text-align: right;
+    }
+
+    .cx-report table.cve-table.osa-cve-table td:last-child,
+    .cx-report table.cve-table.osa-cve-table th:last-child {
+        width: 32%;
+    }
+
+    .cx-report .error-msg {
+        display: block;
+        padding: 4% 0;
+    }
+
+    .cx-report .aui-message.error,
+    .cx-report .aui-message-error {
+        display: block;
+    }
+
+    .cx-report .chart-large .no-scan-message-container {
+        height: 372px;
+    }
+
+    .cx-report .no-scan-message-container {
+        height: 407px;
+        width: 100%;
+        background-color: #F2F2F2;
+        z-index: 1;
+        margin-top: 17px;
+        margin-bottom: 21px;
+    }
+
+    .cx-report .no-scan-message-icon {
+        padding: 27px;
+    }
+
+    .cx-report .no-scan-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #382F50;
+        font-size: 15px;
+        text-align: center;
+        width: 89%;
+    }
+</style>
+
+
+<div id="cx-report" class="cx-report">
+    <div class="report-title">
+        <div class="cx-report-title">Checkmarx Report</div>
+    </div>
+    <div id="results-report" class="results-report">
+
+        <div class="summary-section">
+            <div id="summary-results" class="summary-results">
+
+                <div class="sast-summary chart-large" id="sast-summary">
+                    <div class="summary-report-title sast">
+                        <div class="summary-title-text sast">CxSAST Vulnerabilities Status</div>
+                            <div id="sast-title-links" class="title-links">
+                                <div class="link-to-result summary-link">
+                                    <a href="http://localhost/CxWebClient/ViewerMain.aspx?scanId=1010018&ProjectID=10018" class="html-report" id="sast-summary-html-link">
+                                        <div class="results-link-icon link-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14"
+                                                 viewBox="0 0 12 14">
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <circle stroke="#4A90E2" stroke-width="2" cx="5" cy="5"
+                                                            r="4"></circle>
+                                                    <path fill="#4A90E2"
+                                                          d="M6.366 8.366l1.732-1 3.268 5.66-1.732 1z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class="link-text">Results</div>
+                                    </a>
+                                </div>
+
+                            </div>
+                    </div>
+                        <!--sast-chart-->
+                        <div class="summary-chart" id="sast-results">
+                            <div class="top-of-chart">
+
+
+                                <div class="threshold-exceeded-compliance" id="threshold-exceeded-compliance">
+                                </div>
+
+                                    <div id="sast-legend-container" class="chart-legend-container">
+                                        <div class="chart-legend">
+                                            <div class="legend-item recurrent-legend">
+                                                <div class="legend-color-box recurrent-legend-color"></div>
+                                                <div class="legend-text recurrent-legend-text">Recurrent</div>
+                                            </div>
+                                            <div class="legend-item new-legend">
+                                                <div class="legend-color-box new-legend-color"></div>
+                                                <div class="legend-text new-legend-text">New</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <ul class="chart">
+                                <!--sast-high-->
+                                <li>
+                                        <span class="bar-1" id="bar-high" style="height: 7.632px">
+                                            <div id="tooltip-high">
+                                            </div>
+                                            <div id="high-new-scans" class="new-scans"
+                                                 style="height: 7.632px"></div>
+                                            <div id="high-recurrent-scans" class="recurrent-scans"
+                                                 style="height: 0px"></div>
+                                        </span>
+
+                                    <div class="bar-title-wrapper">
+                                        <div class="bar-title-container">
+                                            <div class="bar-title-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                     width="16px" height="19px" viewBox="0 0 16 19" version="1.1">
+                                                    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+                                                    <title>Med</title>
+                                                    <desc>Created with Sketch.</desc>
+                                                    <defs>
+                                                        <path d="M1,1 L8,0 L15,1 C15,1 16,4.01515152 16,7 C16,13.0151515 10.6766131,18.2701936 10.6766131,18.2701936 C10.30293,18.6732545 9.55664682,19 8.9906311,19 L7.0093689,19 C6.45190985,19 5.70245907,18.6673641 5.33497024,18.2411641 C5.33497024,18.2411641 3.70193273e-12,12.5151515 3.63797881e-12,8 C7.03437308e-13,4.82765152 1,1 1,1 Z"
+                                                              id="path-1"/>
+                                                        <path d="M1,1 L8,0 L15,1 C15,1 16,4.01515152 16,7 C16,13.0151515 10.6766131,18.2701936 10.6766131,18.2701936 C10.30293,18.6732545 9.55664682,19 8.9906311,19 L7.0093689,19 C6.45190985,19 5.70245907,18.6673641 5.33497024,18.2411641 C5.33497024,18.2411641 3.70193273e-12,12.5151515 3.63797881e-12,8 C7.03437308e-13,4.82765152 1,1 1,1 Z"
+                                                              id="path-3"/>
+                                                    </defs>
+                                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+                                                       fill-rule="evenodd">
+                                                        <g id="Icons" transform="translate(-47.000000, -88.000000)">
+                                                            <g id="High" transform="translate(47.000000, 88.000000)">
+                                                                <g id="Vonerability-High">
+                                                                    <mask id="mask-2" fill="white">
+                                                                        <use xlink:href="#path-1"/>
+                                                                    </mask>
+                                                                    <g id="Rectangle-10">
+                                                                        <use fill="#D82D49" fill-rule="evenodd"
+                                                                             xlink:href="#path-1"/>
+                                                                        <path stroke="#BB1A34" stroke-width="1"
+                                                                              d="M1.4041953,1.44733409 L8,0.505076272 L14.6160396,1.45022478 C14.6341112,1.51124347 14.6539641,1.5795116 14.6753578,1.65465958 C14.7899552,2.05719756 14.9047222,2.50600605 15.0118679,2.98897331 C15.3098751,4.33226343 15.4915175,5.67204692 15.4997158,6.91419406 C15.4999523,6.95710967 15.4999523,6.95710967 15.5,7 C15.5,9.52090451 14.5340777,12.111589 12.9179883,14.6199787 C12.3484584,15.5039663 11.7377754,16.313821 11.1275564,17.0311249 C10.9144997,17.2815702 10.7170402,17.5022391 10.5403911,17.6908777 C10.4358029,17.8025645 10.3623853,17.8778048 10.3253512,17.9143634 C10.0291161,18.2331673 9.41484636,18.5 8.9906311,18.5 L7.0093689,18.5 C6.59080843,18.5 5.98194778,18.2258269 5.71364227,17.9146561 C5.66213668,17.8588317 5.58703389,17.7761053 5.4807125,17.6555634 C5.30200204,17.4529504 5.10247221,17.2193106 4.88735491,16.9580823 C4.27213719,16.2109907 3.656779,15.394289 3.08320773,14.5359605 C2.09721248,13.0604546 1.34127053,11.6205479 0.906388115,10.2835472 C0.639104683,9.46181216 0.5,8.69692293 0.5,8 C0.5,7.56658708 0.519280284,7.10494686 0.556403808,6.61890492 C0.63408435,5.60186781 0.786470164,4.51217341 0.991682584,3.40118912 C1.09968656,2.81647439 1.21542088,2.26333889 1.3310756,1.7595034 C1.35796875,1.64234673 1.3824953,1.53794489 1.4041953,1.44733409 Z"/>
+                                                                    </g>
+                                                                    <rect id="Rectangle-22" fill="#BB1A34"
+                                                                          mask="url(#mask-2)" x="8"
+                                                                          y="0" width="8" height="20"/>
+                                                                    <mask id="mask-4" fill="white">
+                                                                        <use xlink:href="#path-3"/>
+                                                                    </mask>
+                                                                    <path stroke="#BB1A34"
+                                                                          d="M1.4041953,1.44733409 L8,0.505076272 L14.6160396,1.45022478 C14.6341112,1.51124347 14.6539641,1.5795116 14.6753578,1.65465958 C14.7899552,2.05719756 14.9047222,2.50600605 15.0118679,2.98897331 C15.3098751,4.33226343 15.4915175,5.67204692 15.4997158,6.91419406 C15.4999523,6.95710967 15.4999523,6.95710967 15.5,7 C15.5,9.52090451 14.5340777,12.111589 12.9179883,14.6199787 C12.3484584,15.5039663 11.7377754,16.313821 11.1275564,17.0311249 C10.9144997,17.2815702 10.7170402,17.5022391 10.5403911,17.6908777 C10.4358029,17.8025645 10.3623853,17.8778048 10.3253512,17.9143634 C10.0291161,18.2331673 9.41484636,18.5 8.9906311,18.5 L7.0093689,18.5 C6.59080843,18.5 5.98194778,18.2258269 5.71364227,17.9146561 C5.66213668,17.8588317 5.58703389,17.7761053 5.4807125,17.6555634 C5.30200204,17.4529504 5.10247221,17.2193106 4.88735491,16.9580823 C4.27213719,16.2109907 3.656779,15.394289 3.08320773,14.5359605 C2.09721248,13.0604546 1.34127053,11.6205479 0.906388115,10.2835472 C0.639104683,9.46181216 0.5,8.69692293 0.5,8 C0.5,7.56658708 0.519280284,7.10494686 0.556403808,6.61890492 C0.63408435,5.60186781 0.786470164,4.51217341 0.991682584,3.40118912 C1.09968656,2.81647439 1.21542088,2.26333889 1.3310756,1.7595034 C1.35796875,1.64234673 1.3824953,1.53794489 1.4041953,1.44733409 Z"/>
+                                                                    <polygon id="H" fill="#FFFFFF" mask="url(#mask-4)"
+                                                                             points="5 12 7 12 7 9.5 9 9.5 9 12 11 12 11 5 9 5 9 7.5 7 7.5 7 5 5 5"/>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="bar-title">High -</div>
+                                            <div class="bar-count" id="bar-count-high">15</div>
+                                        </div>
+                                            <div id="new-bar-count-high" class="new-bar-title-container">15
+                                                New
+                                            </div>
+                                    </div>
+                                </li>
+
+                                <!--sast-medium-->
+                                <li>
+                                        <span class="bar-2" id="bar-med" style="height: 81.915px">
+                                                <div id="tooltip-med">
+                                                </div>
+                                                <div id="med-new-scans" class="new-scans"
+                                                     style="height: 81.915px"></div>
+                                                <div id="med-recurrent-scans" class="recurrent-scans"
+                                                     style="height: 0px"></div>
+                                        </span>
+                                    <div class="bar-title-wrapper">
+                                        <div class="bar-title-container">
+                                            <div class="bar-title-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                     width="16" height="20" viewBox="0 0 16 20"><title>Low</title>
+                                                    <defs>
+                                                        <path d="M1 1.053L8 0l7 1.053s1 3.173 1 6.315c0 6.332-5.346 11.89-5.346 11.89-.36.41-1.097.742-1.663.742H7.01c-.558 0-1.3-.34-1.652-.77 0 0-5.358-6.056-5.358-10.81 0-3.338 1-7.367 1-7.367z"
+                                                              id="a"/>
+                                                        <path d="M1 1.053L8 0l7 1.053s1 3.173 1 6.315c0 6.332-5.346 11.89-5.346 11.89-.36.41-1.097.742-1.663.742H7.01c-.558 0-1.3-.34-1.652-.77 0 0-5.358-6.056-5.358-10.81 0-3.338 1-7.367 1-7.367z"
+                                                              id="c"/>
+                                                    </defs>
+                                                    <g fill="none" fill-rule="evenodd">
+                                                        <mask id="b" fill="#fff">
+                                                            <use xlink:href="#a"/>
+                                                        </mask>
+                                                        <use fill="#FFAC00" xlink:href="#a"/>
+                                                        <path stroke="#E49B16"
+                                                              d="M1.41 1.497L8 .507l6.61.993c.02.067.04.144.064.228.114.425.23.898.337 1.407.3 1.418.48 2.83.49 4.143v.09c0 2.665-.973 5.404-2.6 8.06-.572.934-1.186 1.79-1.8 2.55-.214.264-.413.498-.59.698-.106.118-.18.198-.217.237-.282.32-.882.587-1.302.587H7.01c-.414 0-1.01-.277-1.266-.587-.05-.06-.126-.146-.233-.274-.18-.215-.38-.463-.595-.74-.62-.79-1.237-1.653-1.814-2.56C2.12 13.79 1.363 12.28.923 10.877.644 9.994.5 9.17.5 8.42c0-.457.02-.944.057-1.457.077-1.072.23-2.22.435-3.392.11-.615.224-1.198.34-1.73l.077-.343z"/>
+                                                        <path fill="#D79201" mask="url(#b)" d="M8 0h8v20H8z"/>
+                                                        <mask id="d" fill="#fff">
+                                                            <use xlink:href="#c"/>
+                                                        </mask>
+                                                        <path stroke="#D49100"
+                                                              d="M1.41 1.497L8 .507l6.61.993c.02.067.04.144.064.228.114.425.23.898.337 1.407.3 1.418.48 2.83.49 4.143v.09c0 2.665-.973 5.404-2.6 8.06-.572.934-1.186 1.79-1.8 2.55-.214.264-.413.498-.59.698-.106.118-.18.198-.217.237-.282.32-.882.587-1.302.587H7.01c-.414 0-1.01-.277-1.266-.587-.05-.06-.126-.146-.233-.274-.18-.215-.38-.463-.595-.74-.62-.79-1.237-1.653-1.814-2.56C2.12 13.79 1.363 12.28.923 10.877.644 9.994.5 9.17.5 8.42c0-.457.02-.944.057-1.457.077-1.072.23-2.22.435-3.392.11-.615.224-1.198.34-1.73l.077-.343z"/>
+                                                        <path fill="#472F00" mask="url(#d)"
+                                                              d="M4.28 12.632h1.9v-4.21l1.78 2.862H8L9.79 8.4v4.232h1.93v-7.37H9.67L8 8.117 6.33 5.263H4.28"/>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="bar-title">Medium -</div>
+                                            <div class="bar-count" id="bar-count-med">161</div>
+                                        </div>
+                                            <div id="new-bar-count-medium"
+                                                 class="new-bar-title-container">161 New
+                                            </div>
+                                    </div>
+                                </li>
+
+                                <!--sast-low-->
+                                <li>
+                                        <span class="bar-3" id="bar-low" style="height: 214.2px">
+                                            <div id="tooltip-low">
+                                            </div>
+                                            <div id="low-new-scans" class="new-scans"
+                                                 style="height: 214.2px"></div>
+                                            <div id="low-recurrent-scans" class="recurrent-scans"
+                                                 style="height: 0px"></div>
+                                        </span>
+                                    <div class="bar-title-wrapper">
+                                        <div class="bar-title-container">
+                                            <div class="bar-title-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                     width="16" height="19" viewBox="0 0 16 19">
+                                                    <title>Low</title>
+                                                    <defs>
+                                                        <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-6 12-6 12H6S0 12.515 0 8c0-3.172 1-7 1-7z"
+                                                              id="sast-low-path-1"/>
+                                                        <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-6 12-6 12H6S0 12.515 0 8c0-3.172 1-7 1-7z"
+                                                              id="sast-low-path-2"/>
+                                                    </defs>
+                                                    <g fill="none" fill-rule="evenodd">
+                                                        <path d="M7.96 17.32L8 .015l-6.5 1s-.96 4.5-.96 8.75c1.272 4.602 5.968 9.25 5.968 9.25h.163l1.29-1.695z"
+                                                              fill="#EDEFF5"/>
+                                                        <mask id="sast-low-mask-1" fill="#fff">
+                                                            <use xlink:href="#sast-low-path-1"/>
+                                                        </mask>
+                                                        <use fill="#FFEB3B" xlink:href="#sast-low-path-1"/>
+                                                        <path stroke="#E4D200"
+                                                              d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.342.48 2.682.488 3.924V7c0 2.515-1.09 5.243-2.916 7.978-.644.966-1.335 1.863-2.026 2.667-.24.28-.465.53-.665.745-.04.04-.074.077-.105.11H6.222l-.105-.118c-.202-.23-.427-.492-.67-.785-.694-.837-1.388-1.744-2.035-2.687-.89-1.298-1.62-2.56-2.128-3.738C.772 9.982.5 8.912.5 8c0-.433.02-.895.056-1.38C.634 5.6.786 4.51.992 3.4c.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                        <path fill="#DDCE00" mask="url(#sast-low-mask-1)"
+                                                              d="M8-8h10v32H8z"/>
+                                                        <mask id="sast-low-mask-2" fill="#fff">
+                                                            <use xlink:href="#sast-low-path-2"/>
+                                                        </mask>
+                                                        <path stroke="#E4D200"
+                                                              d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.342.48 2.682.488 3.924V7c0 2.515-1.09 5.243-2.916 7.978-.644.966-1.335 1.863-2.026 2.667-.24.28-.465.53-.665.745-.04.04-.074.077-.105.11H6.222l-.105-.118c-.202-.23-.427-.492-.67-.785-.694-.837-1.388-1.744-2.035-2.687-.89-1.298-1.62-2.56-2.128-3.738C.772 9.982.5 8.912.5 8c0-.433.02-.895.056-1.38C.634 5.6.786 4.51.992 3.4c.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                        <path fill="#605900" mask="url(#sast-low-mask-2)"
+                                                              d="M5.54 12h5.33v-1.7H7.48V5H5.54"/>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="bar-title">Low -</div>
+                                            <div class="bar-count" id="bar-count-low">421</div>
+                                        </div>
+                                            <div id="new-bar-count-low" class="new-bar-title-container">421
+                                                New
+                                            </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+
+            <div id="sast-full" class="sast-full full-results-section">
+                <div class="summary-table-row cxsast-full">
+                    <div class="title-column">
+                        <div class="summary-title">
+                            <div class="sum1">CxSAST</div>
+                            <div class="sum1">Full Report</div>
+                        </div>
+                        <div class="detailed-report">
+                            <div class="full-downloads sast-downloads">
+                                <div class="report-link link-to-result">
+                                    <a href="http://localhost/CxWebClient/ViewerMain.aspx?scanId=1010018&ProjectID=10018" class="pdf-report" id="sast-code-viewer-link"
+                                       target="_top">
+                                        <div class="link-to-result">
+                                            <div class="results-link-icon link-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14"
+                                                     viewBox="0 0 12 14"><title>analize</title>
+                                                    <g fill="none" fill-rule="evenodd">
+                                                        <circle stroke="#4A90E2" stroke-width="2" cx="5" cy="5" r="4"/>
+                                                        <path fill="#4A90E2"
+                                                              d="M6.366 8.366l1.732-1 3.268 5.66-1.732 1z"/>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="link-text">Analyze Results</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-column">
+                        <div class="full-start-end">
+                            <div class="full-start">
+                                <div class="full-start-end-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         height="26px" version="1.1" viewBox="0 0 23 26" width="23px">
+                                        <title>Icon</title>
+                                        <desc>Created with Sketch.</desc>
+                                        <defs>
+                                            <rect height="23" rx="1.6" id="sast-full-start-rect" width="23" x="0"
+                                                  y="2"/>
+                                            <mask height="23" maskUnits="objectBoundingBox" id="full-start-mask-1"
+                                                  width="23"
+                                                  maskContentUnits="userSpaceOnUse" fill="white" x="0"
+                                                  y="0">
+                                                <use xlink:href="#sast-full-start-rect"/>
+                                            </mask>
+                                        </defs>
+                                        <g stroke-width="1" fill-rule="evenodd" id="sast-full-start-Page-1"
+                                           stroke="none"
+                                           fill="none">
+                                            <g transform="translate(-684.000000, -708.000000)" id="sast-full-start-1"
+                                               stroke="#373050">
+                                                <g transform="translate(273.000000, 695.000000)" id="sast-full-start-2">
+                                                    <g transform="translate(411.000000, 9.000000)"
+                                                       id="sast-full-start-3">
+                                                        <g transform="translate(0.000000, 5.000000)"
+                                                           id="sast-full-start-Icon">
+                                                            <use mask="url(#full-start-mask-1)" stroke-width="4"
+                                                                 id="sast-full-start-Rectangle-1"
+                                                                 xlink:href="#sast-full-start-rect"/>
+                                                            <path stroke-width="2" id="sast-full-start-Line-1"
+                                                                  d="M5,0 L5,2.99971994"
+                                                                  stroke-linecap="square"/>
+                                                            <path stroke-width="2" id="sast-full-start-Line-2"
+                                                                  d="M18,0 L18,2.99971994"
+                                                                  stroke-linecap="square"/>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="full-start-end-text-date">
+                                    <div class="full-start-end-text">
+                                        Start:
+                                    </div>
+                                    <div class="full-start-end-date"
+                                         id="sast-full-start-date">08/11/18 15:47</div>
+                                </div>
+                            </div>
+
+                            <!--sast-full-end-->
+                            <div class="full-end">
+                                <div class="full-start-end-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         height="26px" version="1.1" viewBox="0 0 23 26" width="23px">
+                                        <title>Icon</title>
+                                        <desc>Created with Sketch.</desc>
+                                        <defs>
+                                            <rect height="23" rx="1.6" id="sast-full-end-rect" width="23" x="0" y="2"/>
+                                            <mask height="23" maskUnits="objectBoundingBox"
+                                                  id="sast-full-end-mask" width="23"
+                                                  maskContentUnits="userSpaceOnUse" fill="white" x="0"
+                                                  y="0">
+                                                <use xlink:href="#sast-full-end-rect"/>
+                                            </mask>
+                                        </defs>
+                                        <g stroke-width="1" fill-rule="evenodd" id="sast-full-end-Page-1" stroke="none"
+                                           fill="none">
+                                            <g transform="translate(-684.000000, -708.000000)" id="sast-full-end-1"
+                                               stroke="#373050">
+                                                <g transform="translate(273.000000, 695.000000)" id="sast-full-end-2">
+                                                    <g transform="translate(411.000000, 9.000000)" id="sast-full-end-3">
+                                                        <g transform="translate(0.000000, 5.000000)"
+                                                           id="sast-full-end-Icon">
+                                                            <use mask="url(#sast-full-end-mask)" stroke-width="4"
+                                                                 id="sast-full-end-use"
+                                                                 xlink:href="#sast-full-end-rect"/>
+                                                            <path stroke-width="2"
+                                                                  id="sast-full-end-Line-1" d="M5,0 L5,2.99971994"
+                                                                  stroke-linecap="square"/>
+                                                            <path stroke-width="2"
+                                                                  id="sast-full-end-Line-2" d="M18,0 L18,2.99971994"
+                                                                  stroke-linecap="square"/>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="full-start-end-text-date">
+                                    <div class="full-start-end-text">
+                                        End:
+                                    </div>
+                                    <div class="full-start-end-date" id="sast-full-end-date">08/11/18 15:50</div>
+                                </div>
+                            </div>
+
+                            <!--sast-full-files-->
+                            <div class="full-files">
+                                <div class="full-start-end-icon files-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         height="26px" version="1.1" viewBox="0 0 21 26" width="21px">
+                                        <title>file</title>
+                                        <desc>Created with Sketch.</desc>
+                                        <defs>
+                                            <path id="sast-full-files-path"
+                                                  d="M15.5147186,0 L1.99456145,0 C0.90234375,0 0,0.89408944 0,1.99700466 L0,24.0029953 C0,25.1050211 0.892995579,26 1.99456145,26 L19.0054385,26 C20.0976562,26 21,25.1059106 21,24.0029953 L21,5.43446766 L20.9745931,5.45987452 L15.5147186,5.55111512e-16 Z"/>
+                                            <mask height="26" maskUnits="objectBoundingBox"
+                                                  id="sast-full-files-mask" width="21"
+                                                  maskContentUnits="userSpaceOnUse" fill="white" x="0" y="0">
+                                                <use xlink:href="#sast-full-files-path"/>
+                                            </mask>
+                                        </defs>
+                                        <g stroke-width="1" fill-rule="evenodd" id="sast-full-files-Page-1"
+                                           stroke="none"
+                                           fill="none">
+                                            <g transform="translate(-847.000000, -709.000000)" id="sast-full-files-1">
+                                                <g transform="translate(273.000000, 695.000000)" id="sast-full-files-2">
+                                                    <g transform="translate(574.000000, 9.000000)"
+                                                       id="sast-full-files-3">
+                                                        <g transform="translate(0.000000, 5.000000)"
+                                                           id="sast-full-files-4">
+                                                            <use mask="url(#sast-full-files-mask)" stroke-width="4"
+                                                                 id="sast-full-files-use" stroke="#373050"
+                                                                 xlink:href="#sast-full-files-path"/>
+                                                            <path id="sast-full-files-path-2"
+                                                                  d="M13.8888889,0 L14.7777778,0 L21,7 L21,7.5 L21,8 L13,8 L13,0 L13.8888889,0 Z"
+                                                                  fill="#373050"/>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="full-start-end-text-date">
+                                    <div class="full-start-end-text">
+                                        Files:
+                                    </div>
+                                    <div class="full-start-end-date" id="sast-full-files">33</div>
+                                </div>
+                            </div>
+
+                            <!--sast-full-loc-->
+                            <div class="full-loc">
+                                <div class="full-start-end-icon loc-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink" height="29"
+                                         id="sast-full-loc-svg"
+                                         version="1.1" viewBox="0 0 29 29" width="29">
+                                        <title>Icon</title>
+                                        <desc>Created with Avocode.</desc>
+                                        <defs id="sast-full-loc-defs"/>
+                                        <path stroke-miterlimit="50" transform="matrix(1,0,0,1,-1012,-1365)"
+                                              stroke-width="2"
+                                              id="sast-full-loc-path-1" fill-opacity="0"
+                                              stroke-dasharray="0"
+                                              d="M1032 1368L1039.95 1378.76L1032 1389.51 " stroke-opacity="1"
+                                              fill="#ffffff"
+                                              stroke="#373050" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path stroke-miterlimit="50" transform="matrix(1,0,0,1,-1012,-1365)"
+                                              stroke-width="2" id="sast-full-loc-path-2" fill-opacity="0"
+                                              stroke-dasharray="0"
+                                              d="M1020.95 1368L1013 1378.76L1020.95 1389.51 " stroke-opacity="1"
+                                              fill="#ffffff" stroke="#373050" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path stroke-miterlimit="50" transform="matrix(1,0,0,1,-1012,-1365)"
+                                              stroke-width="2" id="sast-full-loc-path-3" fill-opacity="0"
+                                              stroke-dasharray="0"
+                                              d="M1028.86 1366L1022.9999999999999 1392.54 " stroke-opacity="1"
+                                              fill="#ffffff" stroke="#373050" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <div class="full-start-end-text-date">
+                                    <div class="full-start-end-text">
+                                        Code Lines:
+                                    </div>
+                                    <div class="full-start-end-date" id="sast-full-loc">24517</div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div id="sast-cve-table-high-container">
+                                <div class="full-severity-title">
+                                    <div class="severity-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="19"
+                                             viewBox="0 0 16 19"><title>High</title>
+                                            <defs>
+                                                <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-5.323 11.27-5.323 11.27-.374.403-1.12.73-1.686.73H7.01c-.558 0-1.308-.333-1.675-.76C5.335 18.24 0 12.516 0 8c0-3.172 1-7 1-7z"
+                                                      id="sast-full-high-path-1"/>
+                                                <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-5.323 11.27-5.323 11.27-.374.403-1.12.73-1.686.73H7.01c-.558 0-1.308-.333-1.675-.76C5.335 18.24 0 12.516 0 8c0-3.172 1-7 1-7z"
+                                                      id="sast-full-high-path-2"/>
+                                            </defs>
+                                            <g fill="none" fill-rule="evenodd">
+                                                <mask id="sast-full-high-mask-1" fill="#fff">
+                                                    <use xlink:href="#sast-full-high-path-1"/>
+                                                </mask>
+                                                <use fill="#D82D49" xlink:href="#sast-full-high-path-1"/>
+                                                <path stroke="#BB1A34"
+                                                      d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.342.48 2.682.488 3.924V7c0 2.52-.966 5.112-2.582 7.62-.57.884-1.18 1.694-1.79 2.41-.214.252-.41.472-.588.66-.104.113-.178.188-.215.224-.296.32-.91.586-1.334.586H7.01c-.42 0-1.028-.274-1.296-.585-.052-.056-.127-.14-.233-.26-.178-.202-.378-.436-.593-.697-.615-.747-1.23-1.564-1.804-2.422C2.097 13.06 1.34 11.62.906 10.284.64 9.462.5 8.697.5 8c0-.433.02-.895.056-1.38C.634 5.6.786 4.51.992 3.4c.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                <path fill="#BB1A34" mask="url(#sast-full-high-mask-1)"
+                                                      d="M8 0h8v20H8z"/>
+                                                <mask id="sast-full-high-mask-2" fill="#fff">
+                                                    <use xlink:href="#sast-full-high-path-2"/>
+                                                </mask>
+                                                <path stroke="#BB1A34"
+                                                      d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.342.48 2.682.488 3.924V7c0 2.52-.966 5.112-2.582 7.62-.57.884-1.18 1.694-1.79 2.41-.214.252-.41.472-.588.66-.104.113-.178.188-.215.224-.296.32-.91.586-1.334.586H7.01c-.42 0-1.028-.274-1.296-.585-.052-.056-.127-.14-.233-.26-.178-.202-.378-.436-.593-.697-.615-.747-1.23-1.564-1.804-2.422C2.097 13.06 1.34 11.62.906 10.284.64 9.462.5 8.697.5 8c0-.433.02-.895.056-1.38C.634 5.6.786 4.51.992 3.4c.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                <path fill="#FFF" mask="url(#sast-full-high-mask-2)"
+                                                      d="M5 12h2V9.5h2V12h2V5H9v2.5H7V5H5"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="severity-title-name">High</div>
+                                    <div class="severity-count"> 15</div>
+                                </div>
+                                <table id="sast-cve-table-high" class="cve-table sast-cve-table sast-cve-table-high">
+                                    <tr>
+                                        <th>Vulnerability</th>
+                                        <th>##</th>
+                                    </tr>
+                                            <tr>
+                                                <td>Second_Order_SQL_Injection</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Stored_XSS</td>
+                                                <td>4</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Reflected_XSS_All_Clients</td>
+                                                <td>3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SQL_Injection</td>
+                                                <td>3</td>
+                                            </tr>
+                                </table>
+                            </div>
+
+                            <div id="sast-cve-table-medium-container">
+                                <div class="full-severity-title">
+                                    <div class="severity-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="20"
+                                             viewBox="0 0 16 20"><title>Med</title>
+                                            <defs>
+                                                <path d="M1 1.053L8 0l7 1.053s1 3.173 1 6.315c0 6.332-5.346 11.89-5.346 11.89-.36.41-1.097.742-1.663.742H7.01c-.558 0-1.3-.34-1.652-.77 0 0-5.358-6.056-5.358-10.81 0-3.338 1-7.367 1-7.367z"
+                                                      id="sast-full-med-path-1"/>
+                                                <path d="M1 1.053L8 0l7 1.053s1 3.173 1 6.315c0 6.332-5.346 11.89-5.346 11.89-.36.41-1.097.742-1.663.742H7.01c-.558 0-1.3-.34-1.652-.77 0 0-5.358-6.056-5.358-10.81 0-3.338 1-7.367 1-7.367z"
+                                                      id="sast-full-med-path-2"/>
+                                            </defs>
+                                            <g fill="none" fill-rule="evenodd">
+                                                <mask id="sast-full-med-mask-1" fill="#fff">
+                                                    <use xlink:href="#sast-full-med-path-1"/>
+                                                </mask>
+                                                <use fill="#FFAC00" xlink:href="#sast-full-med-path-1"/>
+                                                <path stroke="#E49B16"
+                                                      d="M1.41 1.497L8 .507l6.61.993c.02.067.04.144.064.228.114.425.23.898.337 1.407.3 1.418.48 2.83.49 4.143v.09c0 2.665-.972 5.404-2.6 8.06-.57.934-1.185 1.79-1.8 2.55-.213.264-.412.498-.59.698-.105.118-.18.198-.216.237-.282.32-.882.587-1.302.587H7.01c-.414 0-1.01-.277-1.266-.587-.05-.06-.126-.146-.233-.274-.18-.216-.38-.464-.594-.74-.62-.79-1.237-1.654-1.814-2.56-.982-1.55-1.74-3.06-2.18-4.463C.645 9.994.5 9.17.5 8.42c0-.457.02-.944.057-1.457.077-1.072.23-2.22.435-3.392.11-.614.224-1.197.34-1.73L1.41 1.5z"/>
+                                                <path fill="#D79201" mask="url(#sast-full-med-mask-1)"
+                                                      d="M8 0h8v20H8z"/>
+                                                <mask id="sast-full-med-mask-2" fill="#fff">
+                                                    <use xlink:href="#sast-full-med-path-2"/>
+                                                </mask>
+                                                <path stroke="#D49100"
+                                                      d="M1.41 1.497L8 .507l6.61.993c.02.067.04.144.064.228.114.425.23.898.337 1.407.3 1.418.48 2.83.49 4.143v.09c0 2.665-.972 5.404-2.6 8.06-.57.934-1.185 1.79-1.8 2.55-.213.264-.412.498-.59.698-.105.118-.18.198-.216.237-.282.32-.882.587-1.302.587H7.01c-.414 0-1.01-.277-1.266-.587-.05-.06-.126-.146-.233-.274-.18-.216-.38-.464-.594-.74-.62-.79-1.237-1.654-1.814-2.56-.982-1.55-1.74-3.06-2.18-4.463C.645 9.994.5 9.17.5 8.42c0-.457.02-.944.057-1.457.077-1.072.23-2.22.435-3.392.11-.614.224-1.197.34-1.73L1.41 1.5z"/>
+                                                <path fill="#472F00" mask="url(#sast-full-med-mask-2)"
+                                                      d="M4.28 12.632h1.9v-4.21l1.78 2.862H8L9.79 8.4v4.232h1.93v-7.37H9.67L8 8.117 6.33 5.263H4.28"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="severity-title-name">Medium</div>
+                                    <div class="severity-count">161</div>
+                                </div>
+                                <table id="sast-cve-table-medium"
+                                       class="cve-table sast-cve-table sast-cve-table-medium">
+                                    <tr>
+                                        <th>Vulnerability</th>
+                                        <th>##</th>
+                                    </tr>
+                                            <tr>
+                                                <td>HTTP_Response_Splitting</td>
+                                                <td>66</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cross_Site_History_Manipulation</td>
+                                                <td>45</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hardcoded_password_in_Connection_String</td>
+                                                <td>32</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Heap_Inspection</td>
+                                                <td>9</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CGI_Stored_XSS</td>
+                                                <td>4</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CGI_Reflected_XSS_All_Clients</td>
+                                                <td>3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>XSRF</td>
+                                                <td>2</td>
+                                            </tr>
+                                </table>
+                            </div>
+
+                            <div id="sast-cve-table-low-container">
+                                <div class="full-severity-title">
+                                    <div class="severity-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="19"
+                                             viewBox="0 0 16 19"><title>Low</title>
+                                            <defs>
+                                                <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-6 12-6 12H6S0 12.515 0 8c0-3.172 1-7 1-7z"
+                                                      id="sast-full-low-path-1"/>
+                                                <path d="M1 1l7-1 7 1s1 3.015 1 6c0 6.015-6 12-6 12H6S0 12.515 0 8c0-3.172 1-7 1-7z"
+                                                      id="sast-full-low-path-2"/>
+                                            </defs>
+                                            <g fill="none" fill-rule="evenodd">
+                                                <path d="M7.96 17.32L8 .015l-6.5 1s-.96 4.5-.96 8.75c1.272 4.602 5.968 9.25 5.968 9.25h.163l1.29-1.695z"
+                                                      fill="#EDEFF5"/>
+                                                <mask id="sast-full-low-mask-1" fill="#fff">
+                                                    <use xlink:href="#sast-full-low-path-1"/>
+                                                </mask>
+                                                <use fill="#FFEB3B" xlink:href="#sast-full-low-path-1"/>
+                                                <path stroke="#E4D200"
+                                                      d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.34.48 2.68.488 3.923V7c0 2.515-1.09 5.243-2.916 7.978-.644.966-1.335 1.863-2.026 2.667-.24.28-.465.53-.665.745-.04.04-.074.077-.105.11H6.222l-.105-.118c-.202-.23-.427-.492-.67-.785-.694-.837-1.388-1.744-2.035-2.687-.89-1.298-1.62-2.56-2.128-3.738C.772 9.982.5 8.912.5 8c0-.433.02-.895.056-1.38.078-1.02.23-2.11.436-3.22.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                <path fill="#DDCE00" mask="url(#sast-full-low-mask-1)"
+                                                      d="M8-8h10v32H8z"/>
+                                                <mask id="sast-full-low-mask-2" fill="#fff">
+                                                    <use xlink:href="#sast-full-low-path-2"/>
+                                                </mask>
+                                                <path stroke="#E4D200"
+                                                      d="M1.404 1.447L8 .505l6.616.945.06.205c.114.402.23.85.336 1.334.298 1.34.48 2.68.488 3.923V7c0 2.515-1.09 5.243-2.916 7.978-.644.966-1.335 1.863-2.026 2.667-.24.28-.465.53-.665.745-.04.04-.074.077-.105.11H6.222l-.105-.118c-.202-.23-.427-.492-.67-.785-.694-.837-1.388-1.744-2.035-2.687-.89-1.298-1.62-2.56-2.128-3.738C.772 9.982.5 8.912.5 8c0-.433.02-.895.056-1.38.078-1.02.23-2.11.436-3.22.108-.584.223-1.137.34-1.64.026-.118.05-.222.072-.313z"/>
+                                                <path fill="#605900" mask="url(#sast-full-low-mask-2)"
+                                                      d="M5.54 12h5.33v-1.7H7.48V5H5.54"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="severity-title-name">Low</div>
+                                    <div class="severity-count"> 421</div>
+                                </div>
+                                <table id="sast-cve-table-low" class="cve-table sast-cve-table sast-cve-table-low">
+                                    <tr>
+                                        <th>Vulnerability</th>
+                                        <th>##</th>
+                                    </tr>
+                                            <tr>
+                                                <td>Information_Exposure_Through_an_Error_Message</td>
+                                                <td>99</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Improper_Resource_Shutdown_or_Release</td>
+                                                <td>95</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Improper_Resource_Access_Authorization</td>
+                                                <td>81</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Collapse_of_Data_into_Unsafe_Value</td>
+                                                <td>64</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Open_Redirect</td>
+                                                <td>34</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Empty_Password_In_Connection_String</td>
+                                                <td>32</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Authorization_Bypass_Through_User_Controlled_SQL_PrimaryKey</td>
+                                                <td>11</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Blind_SQL_Injections</td>
+                                                <td>3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Stored_Boundary_Violation</td>
+                                                <td>2</td>
+                                            </tr>
+                                </table>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>
